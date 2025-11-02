@@ -30,6 +30,23 @@ app.use(cors({
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept']
 }));
+app.get('/api/health', (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: 'API is healthy and running',
+    availableRoutes: [
+      'GET /api/health',
+      'GET /api/items',
+      'GET /api/items/:id',
+      'POST /api/items',
+      'PATCH /api/items/:id/like',
+      'DELETE /api/items/:id',
+      'GET /api/filters',
+      'GET /api/stats'
+    ]
+  });
+});
+
   
 
 // Handle preflight requests
