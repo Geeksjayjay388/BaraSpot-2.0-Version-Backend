@@ -23,7 +23,7 @@ app.use(cors({
     'http://127.0.0.1:3000',
     'http://127.0.0.1:5173',
     'http://127.0.0.1:5183',
-    'https://geeksjayjay388.github.io/BaraSpot-2.0-Version/'
+    'https://geeksjayjay388.github.io/BaraSpot-2.0-Version'
 
   ],
   credentials: true,
