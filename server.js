@@ -23,13 +23,14 @@ app.use(cors({
     'http://127.0.0.1:3000',
     'http://127.0.0.1:5173',
     'http://127.0.0.1:5183',
+    'https://bara-spot-2-0-version.vercel.app',  // ✅ Add this!
     'https://geeksjayjay388.github.io/BaraSpot-2.0-Version'
-
   ],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept']
 }));
+  
 
 // Handle preflight requests
 app.options('*', cors());
