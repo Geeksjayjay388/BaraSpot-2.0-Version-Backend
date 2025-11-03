@@ -30,24 +30,6 @@ app.use(cors({
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept']
 }));
-app.get('/api/health', (req, res) => {
-  res.status(200).json({
-    success: true,
-    message: 'API is healthy and running',
-    availableRoutes: [
-      'GET /api/health',
-      'GET /api/items',
-      'GET /api/items/:id',
-      'POST /api/items',
-      'PATCH /api/items/:id/like',
-      'DELETE /api/items/:id',
-      'GET /api/filters',
-      'GET /api/stats'
-    ]
-  });
-});
-
-  
 
 // Handle preflight requests
 app.options('*', cors());
@@ -82,6 +64,7 @@ mongoose.connect(MONGODB_URI)
 // Load route handlers from separate files
 // ===========================
 const itemRoutes = require('./routes/items');
+const adminRoutes = require('./routes/admin');  // ✅ ADDED: Admin routes
 
 // ===========================
 // API ROUTES
@@ -100,6 +83,9 @@ app.get('/api/health', (req, res) => {
 
 // Connect item routes to /api/items path
 app.use('/api/items', itemRoutes);
+
+// ✅ ADDED: Connect admin routes to /api/admin path
+app.use('/api/admin', adminRoutes);
 
 // Get filters data (categories, locations, etc.)
 app.get('/api/filters', async (req, res) => {
@@ -239,7 +225,10 @@ app.use('*', (req, res) => {
       'PATCH /api/items/:id/like',
       'DELETE /api/items/:id',
       'GET /api/filters',
-      'GET /api/stats'
+      'GET /api/stats',
+      'POST /api/admin/login',  // ✅ ADDED
+      'GET /api/admin/verify',  // ✅ ADDED
+      'GET /api/admin/stats'    // ✅ ADDED
     ]
   });
 });
@@ -293,4 +282,7 @@ app.listen(PORT, () => {
   console.log('   DELETE /api/items/:id - Delete item');
   console.log('   GET  /api/filters - Get filter options');
   console.log('   GET  /api/stats - Get statistics');
+  console.log('   POST /api/admin/login - Admin login');  // ✅ ADDED
+  console.log('   GET  /api/admin/verify - Verify admin token');  // ✅ ADDED
+  console.log('   GET  /api/admin/stats - Admin statistics');  // ✅ ADDED
 });
