@@ -17,8 +17,8 @@ const ADMIN_CREDENTIALS = {
   passwordHash: '$2b$10$XkiN3c6TjWg98JltX.EvE.ZHvxKTDMeBPEMboAEBxrHpHFbI9F1v6'
 };
 
-// JWT Secret (should be in .env file)
-const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-this-in-production';
+// JWT Secret from environment variables
+const JWT_SECRET = process.env.JWT_SECRET;
 
 // ===========================
 // MIDDLEWARE: Verify Admin Token
@@ -61,8 +61,6 @@ router.post('/login', async (req, res) => {
   try {
     const { username, password } = req.body;
 
-    console.log('Login attempt:', { username, passwordProvided: !!password });
-
     // Validate input
     if (!username || !password) {
       return res.status(400).json({
@@ -73,6 +71,7 @@ router.post('/login', async (req, res) => {
 
     // Check username
     if (username !== ADMIN_CREDENTIALS.username) {
+      // Don't reveal which field is wrong for security
       return res.status(401).json({
         success: false,
         message: 'Invalid credentials'
@@ -99,7 +98,7 @@ router.post('/login', async (req, res) => {
       { expiresIn: '24h' }
     );
 
-    console.log('✅ Login successful for:', username);
+    console.log('✅ Admin login successful:', username);
 
     res.json({
       success: true,
@@ -109,7 +108,7 @@ router.post('/login', async (req, res) => {
     });
 
   } catch (error) {
-    console.error('Login error:', error);
+    console.error('❌ Login error:', error);
     res.status(500).json({
       success: false,
       message: 'Server error during login'
