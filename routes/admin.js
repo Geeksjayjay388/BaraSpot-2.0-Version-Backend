@@ -13,9 +13,8 @@ const jwt = require('jsonwebtoken');
 // ===========================
 const ADMIN_CREDENTIALS = {
   username: 'jacob',
-  // Password: 'admin123' (hashed)
-  passwordHash: '$2a$10$xQZ9J8YNXXm5vYXfZ5vZ5ew5vZ5vZ5vZ5vZ5vZ5vZ5vZ5vZ5vZ5v'
-  // To generate a new hash, run: bcrypt.hash('yourpassword', 10)
+  // Password: YOUR PASSWORD (the one you just used)
+  passwordHash: '$2b$10$XkiN3c6TjWg98JltX.EvE.ZHvxKTDMeBPEMboAEBxrHpHFbI9F1v6'
 };
 
 // JWT Secret (should be in .env file)
@@ -80,23 +79,13 @@ router.post('/login', async (req, res) => {
       });
     }
 
-    // TEMPORARY: Generate hash for any password you try
-    // This will print the hash in your terminal
-    // LOOK AT YOUR TERMINAL/CONSOLE after trying to login!
-    const hash = await bcrypt.hash(password, 10);
-    console.log('==========================================');
-    console.log('YOUR NEW PASSWORD HASH IS:');
-    console.log(hash);
-    console.log('COPY THE ABOVE TEXT (the long one starting with $2a$10$)');
-    console.log('==========================================');
-
     // Check password
     const isValid = await bcrypt.compare(password, ADMIN_CREDENTIALS.passwordHash);
     
     if (!isValid) {
       return res.status(401).json({
         success: false,
-        message: 'Invalid credentials - but check your terminal for the password hash!'
+        message: 'Invalid credentials'
       });
     }
 
@@ -109,6 +98,8 @@ router.post('/login', async (req, res) => {
       JWT_SECRET,
       { expiresIn: '24h' }
     );
+
+    console.log('✅ Login successful for:', username);
 
     res.json({
       success: true,
