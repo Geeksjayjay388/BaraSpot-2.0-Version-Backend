@@ -10,7 +10,7 @@ const jwt = require('jsonwebtoken');
 
 // ===========================
 // ADMIN CREDENTIALS
-
+// ===========================
 const ADMIN_CREDENTIALS = {
   username: 'jacob',
   // Password: 'admin123' (hashed)
@@ -61,6 +61,8 @@ const verifyAdmin = (req, res, next) => {
 router.post('/login', async (req, res) => {
   try {
     const { username, password } = req.body;
+
+    console.log('Login attempt:', { username, passwordProvided: !!password });
 
     // Validate input
     if (!username || !password) {
