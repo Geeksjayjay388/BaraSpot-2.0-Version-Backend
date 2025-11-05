@@ -10,10 +10,9 @@ const jwt = require('jsonwebtoken');
 
 // ===========================
 // ADMIN CREDENTIALS
-// Change these to your desired credentials
-// ===========================
+
 const ADMIN_CREDENTIALS = {
-  username: 'admin',
+  username: 'jacob',
   // Password: 'admin123' (hashed)
   passwordHash: '$2a$10$xQZ9J8YNXXm5vYXfZ5vZ5ew5vZ5vZ5vZ5vZ5vZ5vZ5vZ5vZ5vZ5v'
   // To generate a new hash, run: bcrypt.hash('yourpassword', 10)
@@ -79,10 +78,15 @@ router.post('/login', async (req, res) => {
       });
     }
 
-    // For first time setup, hash your password
-    // Uncomment these lines, login once to get the hash, then comment them again
-    // const hash = await bcrypt.hash(password, 10);
-    // console.log('Password hash:', hash);
+    // TEMPORARY: Generate hash for any password you try
+    // This will print the hash in your terminal
+    // LOOK AT YOUR TERMINAL/CONSOLE after trying to login!
+    const hash = await bcrypt.hash(password, 10);
+    console.log('==========================================');
+    console.log('YOUR NEW PASSWORD HASH IS:');
+    console.log(hash);
+    console.log('COPY THE ABOVE TEXT (the long one starting with $2a$10$)');
+    console.log('==========================================');
 
     // Check password
     const isValid = await bcrypt.compare(password, ADMIN_CREDENTIALS.passwordHash);
@@ -90,7 +94,7 @@ router.post('/login', async (req, res) => {
     if (!isValid) {
       return res.status(401).json({
         success: false,
-        message: 'Invalid credentials'
+        message: 'Invalid credentials - but check your terminal for the password hash!'
       });
     }
 
